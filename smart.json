@@ -1,0 +1,11 @@
+{
+  "name": "iron-router-hook-auth",
+  "description": "Auth hook for iron-router",
+  "homepage": "https://github.com/zimme/meteor-iron-router-hook-auth",
+  "author": "zimme",
+  "version": "0.0.1",
+  "git": "https://github.com/zimme/meteor-iron-router-hook-auth.git",
+  "packages": {
+      "iron-router": {}
+  }
+}
