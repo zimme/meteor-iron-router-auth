@@ -1,3 +1,5 @@
+sessionKey = 'iron-router-hook-auth.route'
+
 hooks =
   auth: (pause) ->
     pause() if Meteor.loggingIn()
