@@ -1,6 +1,6 @@
 Package.describe({
   summary: 'Auth hook for iron-router',
-  version: '0.0.2'
+  version: '0.0.3'
 });
 
 Package.on_use(function (api, where) {
