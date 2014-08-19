@@ -2,39 +2,41 @@ sessionKey = 'iron-router-hook-auth.route'
 
 hooks =
   auth: (pause) ->
-    pause() if Meteor.loggingIn()
+    unless Router.current().route.name is '__notFound__'
 
-    unless Meteor.userId()
-      options = @lookupProperty 'auth'
+      pause() if Meteor.loggingIn()
 
-      if options
-        if Match.test options, String
-          options =
+      unless Meteor.userId()
+        options = @lookupProperty 'auth'
+
+        if options
+          if Match.test options, String
+            options =
               route: options
 
-        pattern =
-          layout: Match.Optional String
-          route: Match.Optional String
-          template: Match.Optional String
+          pattern =
+            layout: Match.Optional String
+            route: Match.Optional String
+            template: Match.Optional String
 
-        if Match.test options, pattern
-          newRoute = options.route
+          if Match.test options, pattern
+            newRoute = options.route
 
-          if newRoute
-            replaceState = @router.options.auth?.replaceState ? true
-            opts =
+            if newRoute
+              replaceState = @router.options.auth?.replaceState ? true
+              opts =
                 replaceState: replaceState
 
-            currentRoute = @route.name
-            Session.set sessionKey, currentRoute
-            @redirect newRoute, {}, opts
+              currentRoute = @route.name
+              Session.set sessionKey, currentRoute
+              @redirect newRoute, {}, opts
 
-          else if options.template
-            layout = options.layout
-            @layoutTemplate = layout ? @layoutTemplate
-            tmpl = options.template
-            @render tmpl
-            @renderRegions()
-            pause()
+            else if options.template
+              layout = options.layout
+              @layoutTemplate = layout ? @layoutTemplate
+              tmpl = options.template
+              @render tmpl
+              @renderRegions()
+              pause()
 
 _(Router.hooks).extend hooks
