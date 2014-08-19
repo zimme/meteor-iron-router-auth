@@ -2,7 +2,7 @@ sessionKey = 'iron-router-hook-auth.route'
 
 hooks =
   auth: (pause) ->
-    unless Router.current().route.name is '__notFound__'
+    unless @route.name is '__notFound__'
 
       pause() if Meteor.loggingIn()
 
