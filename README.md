@@ -1,4 +1,4 @@
-I used [iron-router-auth](https://github.com/XpressiceCode/iron-router-auth) as inspiration and created an auth hook to use with onBeforeAction.
+I used [iron-router-auth](https://github.com/XpressiveCode/iron-router-auth) as inspiration and created an auth hook to use with onBeforeAction.
 
 It's configurable globally and per route, using the ```auth``` namespace.
 There is however one option that can only be set globally and that's ```replaceState```
