@@ -21,6 +21,7 @@ hooks =
 
           if Match.test options, pattern
             newRoute = options.route
+            template = options.template
 
             if newRoute
               replaceState = @router.options.auth?.replaceState ? true
@@ -31,11 +32,10 @@ hooks =
               Session.set sessionKey, currentRoute
               @redirect newRoute, {}, opts
 
-            else if options.template
+            else if template
               layout = options.layout
-              @layoutTemplate = layout ? @layoutTemplate
-              tmpl = options.template
-              @render tmpl
+              @layout layout if layout
+              @render template
               @renderRegions()
               pause()
 
