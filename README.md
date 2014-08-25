@@ -1,3 +1,5 @@
+## Auth hook for [Iron-router](https://github.com/EventedMind/iron-router)
+
 I used [iron-router-auth](https://github.com/XpressiveCode/iron-router-auth) as inspiration and created an auth hook to use with onBeforeAction.
 
 It's configurable globally and per route, using the ```auth``` namespace.
