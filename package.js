@@ -10,7 +10,7 @@ Package.on_use(function (api, where) {
 
   api.use('coffeescript', 'client');
   api.use('underscore', 'client');
-  api.use("cmather:iron-router@0.8.2", 'client');
+  api.use("iron:router@0.9.0", 'client');
 
   api.add_files('hooks.coffee', 'client');
 });
