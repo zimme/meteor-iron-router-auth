@@ -1,6 +1,10 @@
 {
   "dependencies": [
     [
+      "accounts-base",
+      "1.0.0"
+    ],
+    [
       "application-configuration",
       "1.0.0"
     ],
@@ -85,6 +89,10 @@
       "1.0.0"
     ],
     [
+      "localstorage",
+      "1.0.0"
+    ],
+    [
       "logging",
       "1.0.0"
     ],
@@ -127,6 +135,10 @@
     [
       "routepolicy",
       "1.0.0-cordova1"
+    ],
+    [
+      "service-configuration",
+      "1.0.0"
     ],
     [
       "spacebars",
