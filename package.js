@@ -5,12 +5,12 @@ Package.describe({
   version: '0.1.0'
 });
 
-Package.on_use(function (api, where) {
-  api.versionsFrom('METEOR@0.9.0');
+Package.onUse(function (api, where) {
+  api.versionsFrom('0.9.0');
 
   api.use('coffeescript', 'client');
   api.use('underscore', 'client');
   api.use("iron:router@0.9.0", 'client');
 
-  api.add_files('hooks.coffee', 'client');
+  api.addFiles('hooks.coffee', 'client');
 });
