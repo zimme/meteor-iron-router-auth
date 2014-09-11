@@ -74,7 +74,7 @@ Router.configure({
 });
 ```
 
-On redirect this hook sets a Session variable named ```iron-router-hook-auth.route``` to the current route before redirecting, that way you can redirect back on successful login, and if you use replaceState on that redirect the ```signIn``` route won't be in the history.
+On redirect this hook sets a Session variable named ```iron-router-auth.route``` to the current route before redirecting, that way you can redirect back on successful login, and if you use replaceState on that redirect the ```signIn``` route won't be in the history.
 
 Example of ```signIn``` route with replaceState on redirect
 ```js
