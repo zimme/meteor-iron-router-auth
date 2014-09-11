@@ -5,7 +5,7 @@ Package.describe({
   version: '1.0.1'
 });
 
-Package.onUse(function (api, where) {
+Package.onUse(function (api) {
   api.versionsFrom('0.9.1.1');
 
   api.use('accounts-base', 'client');
