@@ -88,7 +88,7 @@ Router.map(function() {
       }
     },
     onStop: function() {
-      Session.set('iron-router-hook-auth.route', undefined);
+      delete Session['iron-router-auth.route'];
     },
     path: 'sign-in'
   });
