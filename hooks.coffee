@@ -1,4 +1,4 @@
-sessionKey = 'iron-router-hook-auth.route'
+sessionKey = 'iron-router-auth.route'
 
 hooks =
   auth: (pause) ->
