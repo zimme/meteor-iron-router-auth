@@ -1,4 +1,5 @@
 ## Auth hook for [Iron Router](https://github.com/EventedMind/iron-router)
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/zimme/meteor-iron-router-auth?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 I used [iron-router-auth](https://github.com/XpressiveCode/iron-router-auth) as inspiration and created an auth hook to use with onBeforeAction.
 
