@@ -39,4 +39,4 @@ hooks =
               @renderRegions()
               pause()
 
-_(Router.hooks).extend hooks
+_.extend Router.hooks, hooks
