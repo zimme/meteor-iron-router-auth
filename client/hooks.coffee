@@ -26,11 +26,12 @@ hooks.authenticate = ->
   if route
     Session.set sessionKey, @route.name
     @redirect route
+    return
 
-  else if template
-    @layout = layout if layout
-    @render template
-    @renderRegions()
+  @layout = layout if layout
+  defaultAuthenticateTemplate = new Template -> 'Not authenticated...'
+  @render template or defaultAccessDeniedTemplate
+  @renderRegions()
 
 hooks.authorize = ->
   if @route.name is '__notfound__'
