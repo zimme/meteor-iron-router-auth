@@ -1,50 +1,87 @@
-# XXX: Can controller's state or a reactive var be used instead
-# of session var?
+hooks = Iron.Router.hooks
+
 sessionKey = 'iron-router-auth.route'
 
-hooks =
-  authenticate: ->
-    unless @route.name is '__notfound__'
-
-      unless Meteor.loggingIn() and Meteor.userId()
-        options = @lookupOption 'authenticate'
-
-        if options
-          if _.isString options
-            options =
-              route: options
-
-          pattern =
-            layout: Match.Optional String
-            route: Match.Optional String
-            template: Match.Optional String
-
-          if Match.test options, pattern
-            newRoute = options.route
-            template = options.template
-
-            if newRoute
-              # Disable replaceState setting until it's supported again.
-              #
-              # https://github.com/EventedMind/iron-location/issues/5
-              #
-              # replaceState = @router.options.authenticate?.replaceState ? true
-              # opts =
-              #   replaceState: replaceState
-
-              currentRoute = @route.name
-              Session.set sessionKey, currentRoute
-              # @redirect newRoute, {}, opts
-              @redirect newRoute
-
-            else if template
-              layout = options.layout
-              @layout layout if layout
-              @render template
-              @renderRegions()
-
-            return
-
+hooks.authenticate = ->
+  if @route.name is '__notfound__' or Meteor.userId()
     @next()
+    return
 
-_.extend Iron.Router.hooks, hooks
+  return if Meteor.loggingIn()
+
+  ns = 'authenticate'
+
+  option = @lookupOption ns
+
+  layout = @lookupOption 'layout', ns
+  route = @lookupOption 'route', ns
+  template = @lookupOption 'template', ns
+
+  route = option if _.isString option
+
+  check layout, Match.Optional String
+  check route, Match.Optional String
+  check template, Match.Optional String
+
+  if route
+    Session.set sessionKey, @route.name
+    @redirect route
+
+  else if template
+    @layout = layout if layout
+    @render template
+    @renderRegions()
+
+hooks.authorize = ->
+  if @route.name is '__notfound__'
+    @next()
+    return
+
+  return if Meteor.loggingIn() or not Meteor.userId()
+
+  ns = 'authorize'
+
+  allow = @lookupOption 'allow', ns
+  deny = @lookupOption 'deny', ns
+
+  check allow, Match.Optional Function
+  check deny, Match.Optional Function
+
+  if not allow? and deny?
+    authorized = not deny()
+
+  else if allow? and not deny?
+    authorized = allow()
+
+  else if allow? and deny?
+    authorized = not deny() and allow()
+
+  if authorized
+    @next()
+    return
+
+  if Package.insecure
+    console.warn 'Remove "insecure" package to respect allow and deny rules.'
+    @next()
+    return
+
+  layout = @lookupOption 'layout', ns
+  route = @lookupOption 'route', ns
+  template = @lookupOption 'template', ns
+
+  check layout, Match.Optional String
+  check route, Match.Optional String
+  check template, Match.Optional String
+
+  if route
+    Session.set sessionKey, @route.name
+    Session.set 'iron-router-auth.authorized', false
+    @redirect route
+    return
+
+  @layout layout if layout
+  defaultAccessDeniedTemplate = new Template -> 'Access denied...'
+  @render template or defaultAccessDeniedTemplate
+  @renderRegions()
+  unless template
+    console.warn 'No template set for authorize hook.'
