@@ -1,5 +1,8 @@
-hooks =
-  authenticate: ->
-    @next()
+hooks = Iron.Router.hooks
 
-_.extend Iron.Router.hooks, hooks
+skip = ->
+  @next()
+
+hooks.authenticate = skip
+
+hook.authorize = skip

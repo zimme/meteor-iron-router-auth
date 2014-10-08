@@ -1,4 +1,3 @@
-plugins =
+plugins = Iron.Router.plugins
 
-_.extend Iron.Router.plugins, plugins
 plugins.auth = ->
