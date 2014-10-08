@@ -11,6 +11,7 @@ Package.onUse(function (api) {
   api.use('accounts-base', 'client');
 
   api.use([
+    'check',
     'coffeescript',
     'underscore'
   ], ['client', 'server']);
