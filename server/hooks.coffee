@@ -5,4 +5,4 @@ skip = ->
 
 hooks.authenticate = skip
 
-hook.authorize = skip
+hooks.authorize = skip
