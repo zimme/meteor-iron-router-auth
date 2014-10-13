@@ -6,7 +6,7 @@ Package.describe({
 });
 
 Package.onUse(function (api) {
-  api.versionsFrom('0.9.3');
+  api.versionsFrom('0.9.4');
 
   api.use('accounts-base', 'client');
 
@@ -14,9 +14,9 @@ Package.onUse(function (api) {
     'check',
     'coffeescript',
     'underscore'
-  ], ['client', 'server']);
+  ]);
 
-  api.use('iron:router@1.0.0-pre3', ['client', 'server']);
+  api.use('iron:router@1.0.0-pre4');
 
   api.addFiles([
     'client/hooks.coffee',
