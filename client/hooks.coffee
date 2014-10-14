@@ -29,8 +29,7 @@ hooks.authenticate = ->
     return
 
   @layout = layout if layout
-  defaultAuthenticateTemplate = new Template -> 'Not authenticated...'
-  @render template or defaultAccessDeniedTemplate
+  @render template or new Template -> 'Not authenticated...'
   @renderRegions()
 
 hooks.authorize = ->
@@ -81,8 +80,7 @@ hooks.authorize = ->
     return
 
   @layout layout if layout
-  defaultAccessDeniedTemplate = new Template -> 'Access denied...'
-  @render template or defaultAccessDeniedTemplate
+  @render template or new Template -> 'Access denied...'
   @renderRegions()
   unless template
     console.warn 'No template set for authorize hook.'
