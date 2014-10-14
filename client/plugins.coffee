@@ -3,17 +3,16 @@ defaults =
   deny: -> false
   enroll: 'enroll'
   forgot: 'forgotPassword'
-  layout: false # Should be string of layout
   login: 'login'
-  render: false
   reset: 'resetPassword'
   verify: 'verifyEmail'
 
 plugins = Iron.Router.plugins
 
 plugins.auth = (router, options = {}) ->
-  {allow, deny, enroll, forgot, layout, login, render, reset, verify} =
-    _.defaults options, defaults
+  {
+    allow, dashboard, deny, enroll, forgot, layout, login, render, reset, verify
+  } = _.defaults options, defaults
 
   opts =
     except: [enroll, forgot, login, reset, verify]
@@ -39,3 +38,11 @@ plugins.auth = (router, options = {}) ->
   opts.deny = deny
 
   router.onBeforeAction 'authorize', opts
+
+  opts =
+    only: [enroll, forgot, login, reset, verify]
+
+  if dashboard
+    opts.route = dashboard
+
+  router.onBeforeAction 'noauth', opts
