@@ -84,3 +84,20 @@ hooks.authorize = ->
   @renderRegions()
   unless template
     console.warn 'No template set for authorize hook.'
+
+hooks.noauth = ->
+  if @route.name is '__notfound__' or not Meteor.userId()
+    @next()
+    return
+
+  return if Meteor.loggingIn()
+
+  ns = 'noauth'
+
+  route = @lookupOption 'route', ns
+
+  route ?= 'dashboard'
+
+  check route, String
+
+  @redirect route
