@@ -85,14 +85,14 @@ hooks.authorize = ->
   unless template
     console.warn 'No template set for authorize hook.'
 
-hooks.noauth = ->
+hooks.noAuth = ->
   if @route.name is '__notfound__' or not Meteor.userId()
     @next()
     return
 
   return if Meteor.loggingIn()
 
-  ns = 'noauth'
+  ns = 'noAuth'
 
   route = @lookupOption 'route', ns
 

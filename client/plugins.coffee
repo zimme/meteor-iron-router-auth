@@ -45,4 +45,4 @@ plugins.auth = (router, options = {}) ->
   if dashboard
     opts.route = dashboard
 
-  router.onBeforeAction 'noauth', opts
+  router.onBeforeAction 'noAuth', opts
