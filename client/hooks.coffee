@@ -94,7 +94,11 @@ hooks.noAuth = ->
 
   ns = 'noAuth'
 
+  options = @lookupOption ns
+
   route = @lookupOption 'route', ns
+
+  route = options if _.isString options
 
   route ?= 'dashboard'
 
