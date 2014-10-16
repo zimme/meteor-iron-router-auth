@@ -40,7 +40,7 @@ plugins.auth = (router, options = {}) ->
   router.onBeforeAction 'authorize', opts
 
   opts =
-    only: [enroll, forgot, login, reset, verify]
+    only: [enroll, forgot, login]
 
   if dashboard
     opts.route = dashboard
