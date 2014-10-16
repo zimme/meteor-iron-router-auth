@@ -10,6 +10,16 @@ See PR [#864](https://github.com/EventedMind/iron-router/pull/864).
 
 ## Plugin
 
+The plugin is using the hooks under the
+hood. It's a plug 'n' Play solution for
+people with "regular" setups. I would
+recommend to try and use the plugin firstly
+and only use the hooks specifically if you
+really need to.
+
+You can use the hook options on specific
+routes when using the plugin.
+
 ### Usage
 ```js
 // Default options
