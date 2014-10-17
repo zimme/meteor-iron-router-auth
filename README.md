@@ -138,7 +138,7 @@ Router.onBeforeAction('authenticate', {
 
 ### Authorize
 
-This hook is configurable in the same places as [Authenticate](#Authenticate).
+This hook is configurable in the same places as [Authenticate](#authenticate).
 It just uses different options.
 
 ```js
