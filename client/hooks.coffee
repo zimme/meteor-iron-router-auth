@@ -13,20 +13,31 @@ hooks.authenticate = ->
 
   option = @lookupOption ns
 
+  dashboard = @lookupOption 'dashboard', ns
   layout = @lookupOption 'layout', ns
+  logout = @lookupOption 'logout', ns
+  replaceState = @lookupOption 'replaceState', ns
   route = @lookupOption 'route', ns
   template = @lookupOption 'template', ns
 
   route = option if _.isString option
 
+  check dashboard, Match.Optional String
   check layout, Match.Optional String
+  check logout, Match.Optional String
+  check replaceState, Match.Optional Boolean
   check route, Match.Optional String
   check template, Match.Optional String
 
+  replaceState ?= true
+
+  if @route.getName() is logout
+    @redirect dashboard, {}, replaceState: replaceState
+    return
+
   if route
-    Session.set sessionKey, @route.name
-    @redirect route
     Session.set sessionKey, @route.getName()
+    @redirect route, {}, replaceState: replaceState
     return
 
   @layout = layout if layout
@@ -67,17 +78,20 @@ hooks.authorize = ->
     return
 
   layout = @lookupOption 'layout', ns
+  replaceState = @lookupOption 'replaceState', ns
   route = @lookupOption 'route', ns
   template = @lookupOption 'template', ns
 
   check layout, Match.Optional String
+  check replaceState, Match.Optional Boolean
   check route, Match.Optional String
   check template, Match.Optional String
 
   if route
     Session.set sessionKey, @route.getName()
     Session.set 'iron-router-auth.authorized', false
-    @redirect route
+    replaceState ?= true
+    @redirect route, {}, replaceState: replaceState
     return
 
   @layout layout if layout
@@ -97,12 +111,17 @@ hooks.noAuth = ->
 
   options = @lookupOption ns
 
+  replaceState = @lookupOption 'replaceState', ns
   route = @lookupOption 'route', ns
 
   route = options if _.isString options
+  redirectRoute = Session.get sessionKey
 
-  route ?= 'dashboard'
+  check replaceState, Match.Optional Boolean
+  check route, Match.Optional String
 
-  check route, String
+  replaceState ?= true
+  route = redirectRoute ? route
+  route ?= '/'
 
-  @redirect route
+  @redirect route, {}, replaceState: replaceState
