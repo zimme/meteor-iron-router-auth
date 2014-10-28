@@ -3,7 +3,7 @@ hooks = Iron.Router.hooks
 sessionKey = 'iron-router-auth.route'
 
 hooks.authenticate = ->
-  if @route.name is '__notfound__' or Meteor.userId()
+  if @route.getName() is '__notfound__' or Meteor.userId()
     @next()
     return
 
@@ -26,6 +26,7 @@ hooks.authenticate = ->
   if route
     Session.set sessionKey, @route.name
     @redirect route
+    Session.set sessionKey, @route.getName()
     return
 
   @layout = layout if layout
@@ -33,7 +34,7 @@ hooks.authenticate = ->
   @renderRegions()
 
 hooks.authorize = ->
-  if @route.name is '__notfound__'
+  if @route.getName() is '__notfound__'
     @next()
     return
 
@@ -74,7 +75,7 @@ hooks.authorize = ->
   check template, Match.Optional String
 
   if route
-    Session.set sessionKey, @route.name
+    Session.set sessionKey, @route.getName()
     Session.set 'iron-router-auth.authorized', false
     @redirect route
     return
@@ -86,7 +87,7 @@ hooks.authorize = ->
     console.warn 'No template set for authorize hook.'
 
 hooks.noAuth = ->
-  if @route.name is '__notfound__' or not Meteor.userId()
+  if @route.getName() is '__notfound__' or not Meteor.userId()
     @next()
     return
 
