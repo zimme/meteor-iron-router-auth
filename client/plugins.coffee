@@ -4,6 +4,8 @@ defaults =
   enroll: 'enroll'
   forgot: 'forgotPassword'
   login: 'login'
+  logout: 'logout'
+  replaceState: true
   reset: 'resetPassword'
   verify: 'verifyEmail'
 
@@ -11,11 +13,18 @@ plugins = Iron.Router.plugins
 
 plugins.auth = (router, options = {}) ->
   {
-    allow, dashboard, deny, enroll, forgot, layout, login, render, reset, verify
+    allow, dashboard, deny, enroll, forgot, layout, login, logout, render,
+    replaceState, reset, verify
   } = _.defaults options, defaults
 
   opts =
     except: [enroll, forgot, login, reset, verify]
+
+  if dashboard
+    opts.dashboard = dashboard
+
+  if logout
+    opts.logout = logout
 
   if render
     opts.template = login
@@ -26,11 +35,8 @@ plugins.auth = (router, options = {}) ->
   if layout
     opts.layout = layout
 
-  # XXX: See authenticate hook for explanation why this option is disabled.
-  # Add replaceState to options destruction assignment.
-  #
-  # if replaceState?
-  #   opts.replaceState = repalceState
+  if replaceState?
+    opts.replaceState = replaceState
 
   router.onBeforeAction 'authenticate', opts
 
@@ -41,6 +47,9 @@ plugins.auth = (router, options = {}) ->
 
   opts =
     only: [enroll, forgot, login]
+
+  if replaceState?
+    opts.replaceState = replaceState
 
   if dashboard
     opts.route = dashboard
