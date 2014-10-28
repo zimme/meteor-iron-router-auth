@@ -16,7 +16,7 @@ Package.onUse(function (api) {
     'underscore'
   ]);
 
-  api.use('iron:router@1.0.0-pre4');
+  api.use('iron:router@1.0.0-rc.1');
 
   api.addFiles([
     'client/hooks.coffee',
