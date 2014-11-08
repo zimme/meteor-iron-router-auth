@@ -19,6 +19,7 @@ plugins.auth = (router, options = {}) ->
 
   opts =
     except: [enroll, forgot, login, reset, verify]
+    namespace: 'authenticate'
 
   if dashboard
     opts.dashboard = dashboard
@@ -42,10 +43,12 @@ plugins.auth = (router, options = {}) ->
 
   opts.allow = allow
   opts.deny = deny
+  opts.namespace = 'authorize'
 
   router.onBeforeAction 'authorize', opts
 
   opts =
+    namespace: 'noAuth'
     only: [enroll, forgot, login]
 
   if replaceState?
