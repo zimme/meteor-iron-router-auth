@@ -2,7 +2,7 @@ Package.describe({
   git: 'https://github.com/zimme/meteor-iron-router-auth.git',
   name: 'zimme:iron-router-auth',
   summary: 'Auth plugin and hooks for iron:router',
-  version: '2.0.0-pre.6'
+  version: '2.0.0-pre.7'
 });
 
 Package.onUse(function (api) {
