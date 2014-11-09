@@ -102,6 +102,9 @@ hooks.authorize = ->
     @redirect route, {}, replaceState: replaceState
     return
 
+  @state.set 'iron-router-auth',
+    authorized: false
+
   @layout layout if layout
   @render template or new Template -> 'Access denied...'
   @renderRegions()
