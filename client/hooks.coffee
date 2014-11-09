@@ -36,7 +36,11 @@ hooks.authenticate = ->
     return
 
   if route
-    Session.set sessionKey, @route.getName()
+    sessionValue =
+      params: _.omit @params, -> false
+      route: @route.getName()
+
+    Session.set sessionKey, sessionValue
     @redirect route, {}, replaceState: replaceState
     return
 
@@ -88,8 +92,12 @@ hooks.authorize = ->
   check template, Match.Optional String
 
   if route
-    Session.set sessionKey, @route.getName()
-    Session.set 'iron-router-auth.authorized', false
+    sessionValue =
+      authorized: false
+      params: _.omit @params, -> false
+      route: @route.getName()
+
+    Session.set sessionKey, sessionValue
     replaceState ?= true
     @redirect route, {}, replaceState: replaceState
     return
@@ -115,13 +123,15 @@ hooks.noAuth = ->
   route = @lookupOption 'route', ns
 
   route = options if _.isString options
-  redirectRoute = Session.get sessionKey
+  sessionValue = Session.get sessionKey
 
   check replaceState, Match.Optional Boolean
   check route, Match.Optional String
 
   replaceState ?= true
-  route = redirectRoute ? route
+  route = sessionValue?.route ? route
   route ?= '/'
 
-  @redirect route, {}, replaceState: replaceState
+  params = sessionValue?.params ? {}
+
+  @redirect route, params, replaceState: replaceState
