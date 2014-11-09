@@ -1,6 +1,6 @@
 hooks = Iron.Router.hooks
 
-sessionKey = 'iron-router-auth.route'
+sessionKey = 'iron-router-auth'
 
 hooks.authenticate = ->
   if @route.getName() is '__notfound__' or Meteor.userId()
