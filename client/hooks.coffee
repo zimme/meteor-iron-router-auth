@@ -140,6 +140,6 @@ hooks.noAuth = ->
 
   params = sessionValue?.params ? {}
 
-  delete Session.key[sessionKey]
+  delete Session.keys[sessionKey]
 
   @redirect route, params, replaceState: replaceState
