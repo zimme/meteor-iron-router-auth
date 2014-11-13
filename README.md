@@ -188,9 +188,7 @@ Example `login` route.
 ```js
 Router.route('/login', {
   name: 'login',
-  onBeforeAction: 'noauth',
-  onStop: function() {
-    delete Session['iron-router-auth'];
+  onBeforeAction: 'noauth'
   },
 });
 
