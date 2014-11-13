@@ -18,43 +18,44 @@ plugins.auth = (router, options = {}) ->
   } = _.defaults options, defaults
 
   opts =
+    authenticate: {}
     except: [enroll, forgot, login, reset, verify]
-    namespace: 'authenticate'
 
   if dashboard
-    opts.dashboard = dashboard
+    opts.authenticate.dashboard = dashboard
 
   if logout
-    opts.logout = logout
+    opts.authenticate.logout = logout
 
   if render
-    opts.template = login
+    opts.authenticate.template = login
 
   else
-    opts.route = login
+    opts.authenticate.route = login
 
   if layout
-    opts.layout = layout
+    opts.authenticate.layout = layout
 
   if replaceState?
-    opts.replaceState = replaceState
+    opts.authenticate.replaceState = replaceState
 
   router.onBeforeAction 'authenticate', _.clone opts
 
-  opts.allow = allow
-  opts.deny = deny
-  opts.namespace = 'authorize'
+  opts.authorize = opts.authenticate
+  delete opts.authenticate
+  opts.authorize.allow = allow
+  opts.authorize.deny = deny
 
   router.onBeforeAction 'authorize', _.clone opts
 
   opts =
-    namespace: 'noAuth'
+    noAuth: {}
     only: [enroll, forgot, login]
 
   if replaceState?
-    opts.replaceState = replaceState
+    opts.noAuth.replaceState = replaceState
 
   if dashboard
-    opts.route = dashboard
+    opts.noAuth.route = dashboard
 
   router.onBeforeAction 'noAuth', _.clone opts

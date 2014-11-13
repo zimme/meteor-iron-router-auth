@@ -11,16 +11,16 @@ hooks.authenticate = ->
 
   ns = 'authenticate'
 
-  option = @lookupOption ns
+  options = @lookupOption ns
 
-  dashboard = @lookupOption 'dashboard', ns
-  layout = @lookupOption 'layout', ns
-  logout = @lookupOption 'logout', ns
-  replaceState = @lookupOption 'replaceState', ns
-  route = @lookupOption 'route', ns
-  template = @lookupOption 'template', ns
+  dashboard = options?.dashboard
+  layout = options?.layout
+  logout = options?.logout
+  replaceState = options?.replaceState
+  route = options?.route
+  template = options?.template
 
-  route = option if _.isString option
+  route = options if _.isString options
 
   check dashboard, Match.Optional String
   check layout, Match.Optional String
@@ -58,8 +58,10 @@ hooks.authorize = ->
 
   ns = 'authorize'
 
-  allow = @lookupOption 'allow', ns
-  deny = @lookupOption 'deny', ns
+  options = @lookupOption ns
+
+  allow = options?.allow
+  deny = options?.deny
 
   check allow, Match.Optional Function
   check deny, Match.Optional Function
@@ -82,10 +84,10 @@ hooks.authorize = ->
     @next()
     return
 
-  layout = @lookupOption 'layout', ns
-  replaceState = @lookupOption 'replaceState', ns
-  route = @lookupOption 'route', ns
-  template = @lookupOption 'template', ns
+  layout = options?.layout
+  replaceState = options?.replaceState
+  route = options?.route
+  template = options?.template
 
   check layout, Match.Optional String
   check replaceState, Match.Optional Boolean
@@ -123,8 +125,8 @@ hooks.noAuth = ->
 
   options = @lookupOption ns
 
-  replaceState = @lookupOption 'replaceState', ns
-  route = @lookupOption 'route', ns
+  replaceState = options?.replaceState
+  route = options?.route
 
   route = options if _.isString options
   sessionValue = Session.get sessionKey
