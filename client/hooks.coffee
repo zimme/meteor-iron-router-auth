@@ -32,6 +32,7 @@ hooks.authenticate = ->
   replaceState ?= true
 
   if @route.getName() is logout
+    dashboard ?= '/'
     @redirect dashboard, {}, replaceState: replaceState
     return
 
