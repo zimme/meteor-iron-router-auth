@@ -188,7 +188,7 @@ Example `login` route.
 ```js
 Router.route('/login', {
   name: 'login',
-  onBeforeAction: 'noauth'
+  onBeforeAction: 'noAuth'
   },
 });
 
