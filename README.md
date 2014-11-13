@@ -5,18 +5,11 @@
 
 I used [iron-router-auth](https://github.com/XpressiveCode/iron-router-auth) as inspiration and created a plugin and some auth hooks to use with onBeforeAction.
 
-### Note
-This pre-release is depending on my fork of
-[Iron.Router](https://github.com/zimme/meteor-iron-router). The reason for that
-is because of some work I did with namespaced hook options. This will hopefully
-get merged into Iron.Router and if not I'll make the necessary changes.  
-See PR [#864](https://github.com/EventedMind/iron-router/pull/864).
-
 ## Plugin
 
 The plugin is using the hooks under the hood. It's a plug 'n' Play solution for
 people with "regular" setups. I would recommend to try and use the plugin
-firstly and only use the hooks specifically if you really need to.
+first and only use the hooks manually if you really need to.
 
 You can use the hook options on specific routes when using the plugin.
 
@@ -34,7 +27,7 @@ Router.plugin('auth', {
       return false
   },
   dashboard: 'home',
-  login: 'signIn',
+  login: 'login',
   render: true
 });
 ```
@@ -47,7 +40,7 @@ Router.plugin('auth', {
   dashboard: 'dashboard'
   enroll: 'enroll',
   forgot: 'forgotPassword',
-  layout: , // Only used when render: true and don't have default value
+  layout: undefined, // Only used when render: true
   login: 'login',
   render: false,
   reset: 'resetPassword',
@@ -64,16 +57,16 @@ namespace.
 
 Use hook globally
 ```js
-Router.onBeforeAction('authtenticate', {except: ['signIn']});
+Router.onBeforeAction('authtenticate', {except: ['login']});
 
 // With options on use
 Router.onBeforeAction('authenticate', {
-  except: ['signIn'],
+  except: ['login'],
   template: 'signInTemplate'
 });
 ```
 
-Redirect to `signIn` route when user isn't logged in.
+Redirect to `login` route when user isn't logged in.
 
 ```js
 // Gobal config.
@@ -81,25 +74,25 @@ Redirect to `signIn` route when user isn't logged in.
 // instead as you can keep the router options
 // and hook options separated.
 Router.configure({
-  authtenticate: 'signIn'
+  authtenticate: 'login'
 });
 
 Router.configure({
   authtenticate: {
-    route: 'signIn'
+    route: 'login'
   }
 });
 
 // Route config
 Router.route('/path', {
-  authtenticate: 'signIn',
+  authtenticate: 'login',
   name: 'authNeededRoute',
   ...
 });
 
 Router.route('/path', {
   authtenticate: {
-    route: 'signIn'
+    route: 'login'
   },
   name: 'authNeededRoute',
   ...
@@ -107,7 +100,7 @@ Router.route('/path', {
 
 // Controller config
 AuthNeededController = RouteController.extend({
-  authtenticate: 'signIn',
+  authtenticate: 'login',
   // Activate hook per route
   onBeforeAction: 'authtenticate',
   ...
@@ -115,7 +108,7 @@ AuthNeededController = RouteController.extend({
 
 AuthNeededController = RouteController.extend({
   authtenticate: {
-    route: 'signIn'
+    route: 'login'
   }
   // Activate hook per route with another custom hook
   onBeforeAction: [
@@ -127,12 +120,12 @@ AuthNeededController = RouteController.extend({
   ...
 });
 ```
-Render `signIn` template in-place when user isn't logged in. (Configurable in
+Render `login` template in-place when user isn't logged in. (Configurable in
 same places as redirect examples)
 ```js
 Router.onBeforeAction('authenticate', {
     layout: 'layout', // Optional
-    template: 'signIn'
+    template: 'login'
   }
 });
 ```
@@ -152,7 +145,7 @@ Router.onBeforeAction('authorize', {
     else
       return false  
   },
-  except: ['signIn']
+  except: ['login']
 });
 
 Router.route('/path', {
@@ -168,14 +161,14 @@ Router.route('/path', {
 });
 ```
 
-### Noauth
+### No auth
 
 This hook is used when you want to redirect to another route when user already
 is logged in.
 
 ```js
-Router.route('/sign-in', {
-  name: 'signIn',
+Router.route('/login', {
+  name: 'login',
   noAuth: {
     route: 'home'
   },
@@ -186,16 +179,18 @@ Router.route('/sign-in', {
 ## Basic examples
 
 Before redirecting, these hooks sets a Session variable named
-`iron-router-auth.route` with the current route.  
+`iron-router-auth` with the current route and params and a flag
+indicating if user wasn't authorized; authorized is only avaiable if redirected from `authorize`
+ hook.  
 This way you can redirect back on successful login.
 
-Example of `signIn` route with replaceState on redirect
+Example `login` route.
 ```js
-Router.route('/sign-in', {
-  name: 'signIn',
+Router.route('/login', {
+  name: 'login',
   onBeforeAction: 'noauth',
   onStop: function() {
-    delete Session['iron-router-auth.route'];
+    delete Session['iron-router-auth'];
   },
 });
 
