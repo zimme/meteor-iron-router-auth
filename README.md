@@ -7,7 +7,7 @@ I used [iron-router-auth](https://github.com/XpressiveCode/iron-router-auth) as 
 
 ## Plugin
 
-The plugin is using the hooks under the hood. It's a plug 'n' Play solution for
+The plugin is using the hooks under the hood. It's a plug 'n' play solution for
 people with "regular" setups. I would recommend to try and use the plugin
 first and only use the hooks manually if you really need to.
 
