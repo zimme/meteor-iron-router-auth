@@ -1,4 +1,4 @@
-# Auth hook for [Iron.Router](https://github.com/EventedMind/iron-router)
+# Auth plugin and hooks for [Iron.Router](https://github.com/EventedMind/iron-router)
 
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/zimme/meteor-iron-router-auth?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![Code Climate](https://img.shields.io/codeclimate/github/zimme/meteor-iron-router-auth.svg?style=flat)](https://codeclimate.com/github/zimme/meteor-iron-router-auth)
