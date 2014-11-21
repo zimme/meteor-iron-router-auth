@@ -32,7 +32,7 @@ hooks.authenticate = ->
   replaceState ?= true
 
   if @route.getName() is logout
-    dashboard ?= '/'
+    dashboard = '/' unless @router.routes[dashboard] and dashboard
     @redirect dashboard, {}, replaceState: replaceState
     return
 
@@ -142,7 +142,7 @@ hooks.noAuth = ->
 
   replaceState ?= true
   route = sessionValue?.route ? route
-  route ?= '/'
+  route = '/' unless @router.routes[route] and route
 
   params = sessionValue?.params ? {}
 
