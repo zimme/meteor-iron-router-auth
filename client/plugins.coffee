@@ -39,14 +39,14 @@ plugins.auth = (router, options = {}) ->
   if replaceState?
     opts.authenticate.replaceState = replaceState
 
-  router.onBeforeAction 'authenticate', _.clone opts
+  router.onBeforeAction 'authenticate', EJSON.clone opts
 
   opts.authorize = opts.authenticate
   delete opts.authenticate
   opts.authorize.allow = allow
   opts.authorize.deny = deny
 
-  router.onBeforeAction 'authorize', _.clone opts
+  router.onBeforeAction 'authorize', EJSON.clone opts
 
   opts =
     noAuth: {}
@@ -58,4 +58,4 @@ plugins.auth = (router, options = {}) ->
   if dashboard
     opts.noAuth.route = dashboard
 
-  router.onBeforeAction 'noAuth', _.clone opts
+  router.onBeforeAction 'noAuth', EJSON.clone opts

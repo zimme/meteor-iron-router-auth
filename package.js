@@ -13,6 +13,7 @@ Package.onUse(function (api) {
   api.use([
     'check',
     'coffeescript',
+    'ejson',
     'underscore'
   ]);
 
