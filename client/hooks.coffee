@@ -37,8 +37,11 @@ hooks.authenticate = ->
     return
 
   if route
+    params = {}
+    params[key] = value for own key, value of @params
+
     sessionValue =
-      params: _.omit @params, -> false
+      params: params
       route: @route.getName()
 
     Session.set sessionKey, sessionValue
@@ -95,9 +98,12 @@ hooks.authorize = ->
   check template, Match.Optional String
 
   if route
+    params = {}
+    params[key] = value for own key, value of @params
+
     sessionValue =
       authorized: false
-      params: _.omit @params, -> false
+      params: params
       route: @route.getName()
 
     Session.set sessionKey, sessionValue
