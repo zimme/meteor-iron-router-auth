@@ -13,6 +13,10 @@ hooks.authenticate = ->
 
   options = @lookupOption ns
 
+  if options is false
+    @next()
+    return
+
   dashboard = options?.dashboard
   layout = options?.layout
   logout = options?.logout
@@ -57,11 +61,21 @@ hooks.authorize = ->
     @next()
     return
 
+  authenticate = @lookupOption 'authenticate'
+
+  if authenticate is false
+    @next()
+    return
+
   return if Meteor.loggingIn() or not Meteor.userId()
 
   ns = 'authorize'
 
   options = @lookupOption ns
+
+  if options is false
+    @next()
+    return
 
   allow = options?.allow
   deny = options?.deny
