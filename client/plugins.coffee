@@ -1,5 +1,6 @@
 defaults =
   allow: -> true
+  dashboard: 'dashboard'
   deny: -> false
   enroll: 'enroll'
   forgot: 'forgotPassword'
