@@ -40,7 +40,7 @@ hooks.authenticate = ->
     @redirect dashboard, {}, replaceState: replaceState
     return
 
-  if route
+  if route and @router.routes[route]
     params = {}
     params[key] = value for own key, value of @params
 
@@ -111,7 +111,7 @@ hooks.authorize = ->
   check route, Match.Optional String
   check template, Match.Optional String
 
-  if route
+  if route and @router.routes[route]
     params = {}
     params[key] = value for own key, value of @params
 
