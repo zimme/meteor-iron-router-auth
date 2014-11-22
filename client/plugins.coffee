@@ -19,7 +19,9 @@ defaults =
 plugins = Iron.Router.plugins
 
 plugins.auth = (router, options = {}) ->
-  _.defaults options, defaults
+  for key in _.keys defaults
+    options[key] ?= {}
+    _.defaults options[key], defaults[key]
 
   router.onBeforeAction 'authenticate', _.pick options, 'authenticate', 'except'
 
