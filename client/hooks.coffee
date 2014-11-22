@@ -155,13 +155,22 @@ hooks.noAuth = ->
 
   options = @lookupOption ns
 
+  dashboard = options?.dashboard
+  home = options?.home
   replaceState = options?.replaceState
-  route = options?.route
 
   route = options if _.isString options
 
+  check dashboard, Match.Optional String
+  check home, Match.Optional String
   check replaceState, Match.Optional Boolean
-  check route, Match.Optional String
+
+  if dashboard
+    route = dashboard if @router.routes[dashboard]
+
+  else if home
+    route = home if @router.routes[home]
+
 
   replaceState ?= true
   route = sessionValue?.route ? route
