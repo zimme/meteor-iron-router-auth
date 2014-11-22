@@ -116,7 +116,7 @@ hooks.authorize = ->
     params[key] = value for own key, value of @params
 
     sessionValue =
-      authorized: false
+      notAuthorized: true
       params: params
       route: @route.getName()
 
@@ -126,7 +126,7 @@ hooks.authorize = ->
     return
 
   @state.set 'iron-router-auth',
-    authorized: false
+    notAuthorized: true
 
   @layout layout if layout
   @render template or new Template -> 'Access denied...'
