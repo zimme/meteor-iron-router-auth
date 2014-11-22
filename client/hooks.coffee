@@ -141,6 +141,12 @@ hooks.noAuth = ->
 
   return if Meteor.loggingIn()
 
+  sessionValue = Session.get sessionKey
+
+  if Meteor.userId() and sessionValue?.notAuthorized
+    @next()
+    return
+
   ns = 'noAuth'
 
   options = @lookupOption ns
@@ -149,7 +155,6 @@ hooks.noAuth = ->
   route = options?.route
 
   route = options if _.isString options
-  sessionValue = Session.get sessionKey
 
   check replaceState, Match.Optional Boolean
   check route, Match.Optional String
