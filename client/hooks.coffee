@@ -19,7 +19,7 @@ hooks.authenticate = ->
 
   dashboard = options?.dashboard
   layout = options?.layout
-  logout = options?.logout
+  logout = options?.logout or 'logout'
   replaceState = options?.replaceState
   route = options?.route
   template = options?.template
