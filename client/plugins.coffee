@@ -1,62 +1,28 @@
 defaults =
-  allow: -> true
-  dashboard: 'dashboard'
-  deny: -> false
-  enroll: 'enroll'
-  forgot: 'forgotPassword'
-  login: 'login'
-  logout: 'logout'
-  replaceState: true
-  reset: 'resetPassword'
-  verify: 'verifyEmail'
+  authenticate:
+    home: 'home'
+    route: 'login'
+
+  authorize:
+    allow: -> true
+    deny: -> false
+    template: 'notAuthorized'
+
+  except: ['enroll', 'forgotPassword', 'login', 'reset', 'verify']
+
+  noAuth:
+    dashboard: 'dashboard'
+    home: 'home'
+
+  only: ['enroll', 'forgotPassword', 'login']
 
 plugins = Iron.Router.plugins
 
 plugins.auth = (router, options = {}) ->
-  {
-    allow, dashboard, deny, enroll, forgot, layout, login, logout, render,
-    replaceState, reset, verify
-  } = _.defaults options, defaults
+  _.defaults options, defaults
 
-  opts =
-    authenticate: {}
-    except: [enroll, forgot, login, reset, verify]
+  router.onBeforeAction 'authenticate', _.pick options, 'authenticate', 'except'
 
-  if dashboard
-    opts.authenticate.dashboard = dashboard
+  router.onBeforeAction 'authorize', _.pick options, 'authorize', 'except'
 
-  if logout
-    opts.authenticate.logout = logout
-
-  if render
-    opts.authenticate.template = login
-
-  else
-    opts.authenticate.route = login
-
-  if layout
-    opts.authenticate.layout = layout
-
-  if replaceState?
-    opts.authenticate.replaceState = replaceState
-
-  router.onBeforeAction 'authenticate', EJSON.clone opts
-
-  opts.authorize = opts.authenticate
-  delete opts.authenticate
-  opts.authorize.allow = allow
-  opts.authorize.deny = deny
-
-  router.onBeforeAction 'authorize', EJSON.clone opts
-
-  opts =
-    noAuth: {}
-    only: [enroll, forgot, login]
-
-  if replaceState?
-    opts.noAuth.replaceState = replaceState
-
-  if dashboard
-    opts.noAuth.route = dashboard
-
-  router.onBeforeAction 'noAuth', EJSON.clone opts
+  router.onBeforeAction 'noAuth', _.pick options, 'noAuth', 'only'
