@@ -114,6 +114,8 @@ hooks.authorize = ->
   check route, Match.Optional String
   check template, Match.Optional String
 
+  replaceState ?= true
+
   if route and @router.routes[route]
     params = {}
     params[key] = value for own key, value of @params
@@ -124,7 +126,6 @@ hooks.authorize = ->
       route: @route.getName()
 
     Session.set sessionKey, sessionValue
-    replaceState ?= true
     @redirect route, {}, replaceState: replaceState
     return
 
