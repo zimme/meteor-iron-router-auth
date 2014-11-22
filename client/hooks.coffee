@@ -17,7 +17,7 @@ hooks.authenticate = ->
     @next()
     return
 
-  dashboard = options?.dashboard
+  home = options?.home
   layout = options?.layout
   logout = options?.logout or 'logout'
   replaceState = options?.replaceState
@@ -26,7 +26,7 @@ hooks.authenticate = ->
 
   route = options if _.isString options
 
-  check dashboard, Match.Optional String
+  check home, Match.Optional String
   check layout, Match.Optional String
   check logout, Match.Optional String
   check replaceState, Match.Optional Boolean
@@ -35,9 +35,9 @@ hooks.authenticate = ->
 
   replaceState ?= true
 
-  if @route.getName() is logout
-    dashboard = '/' unless @router.routes[dashboard] and dashboard
-    @redirect dashboard, {}, replaceState: replaceState
+  if @route.getName() is logout and not Meteor.userId()
+    home = '/' unless @router.routes[home] and home
+    @redirect home, {}, replaceState: replaceState
     return
 
   if route and @router.routes[route]
