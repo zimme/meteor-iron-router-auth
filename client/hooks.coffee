@@ -52,6 +52,9 @@ hooks.authenticate = ->
     @redirect route, {}, replaceState: replaceState
     return
 
+  else if route
+    console.warn 'Route for authenticate hook not found.'
+
   @layout = layout if layout
   @render template or new Template -> 'Not authenticated...'
   @renderRegions()
