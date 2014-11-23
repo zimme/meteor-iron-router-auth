@@ -58,6 +58,19 @@ hooks.authenticate = ->
   @render template or new Template -> 'Not authenticated...'
   @renderRegions()
 
+  if route
+    console.warn "Route \"#{route}\" for authenticate hook not found."
+
+  else if not template
+    if template is false
+      console.warn "Template \"#{template}\" for authenticate hook not found."
+
+    else if not route
+      console.warn 'No route or template set for authenticate hook.'
+
+    else
+      console.warn 'No template set for authenticate hook.'
+
 hooks.authorize = ->
   if @route.getName() is '__notfound__'
     @next()
@@ -136,8 +149,19 @@ hooks.authorize = ->
   @layout layout if layout
   @render template or new Template -> 'Access denied...'
   @renderRegions()
-  unless template
-    console.warn 'No template set for authorize hook.'
+
+  if route
+    console.warn "Route \"#{route}\" for authorize hook not found."
+
+  else if not template
+    if template is false
+      console.warn "Template \"#{template}\" for authorize hook not found."
+
+    else if not route
+      console.warn 'No route or template set for authorize hook.'
+
+    else
+      console.warn 'No template set for authorize hook.'
 
 hooks.noAuth = ->
   if @route.getName() is '__notfound__' or not Meteor.userId()
@@ -181,3 +205,14 @@ hooks.noAuth = ->
   delete Session.keys[sessionKey]
 
   @redirect route, params, replaceState: replaceState
+
+  if route is '/'
+    if dashboard
+      console.warn "Route \"#{dashboard}\" for noAuth hook not found, using" +
+        "\"/\""
+
+    else if home
+      console.warn "Route \"#{home}\" for noAuth hook not found, using \"/\""
+
+    else
+      console.warn "No route or template set for noAuth hook, using \"/\""
