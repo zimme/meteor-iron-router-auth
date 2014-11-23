@@ -40,7 +40,7 @@ hooks.authenticate = ->
     @redirect home, {}, replaceState: replaceState
     return
 
-  if route and @router.routes[route]
+  if @router.routes[route]
     params = {}
     params[key] = value for own key, value of @params
 
@@ -116,7 +116,7 @@ hooks.authorize = ->
 
   replaceState ?= true
 
-  if route and @router.routes[route]
+  if @router.routes[route]
     params = {}
     params[key] = value for own key, value of @params
 
