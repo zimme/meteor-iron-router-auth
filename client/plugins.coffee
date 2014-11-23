@@ -14,7 +14,7 @@ defaults =
     dashboard: 'dashboard'
     home: 'home'
 
-  only: ['enroll', 'forgotPassword', 'login']
+  only: ['enroll', 'login']
 
 plugins = Iron.Router.plugins
 
