@@ -52,6 +52,7 @@ hooks.authenticate = ->
     @redirect route, {}, replaceState: replaceState
     return
 
+  template = false if _.isString template and not Template[template]
 
   @layout = layout if layout
   @render template or new Template -> 'Not authenticated...'
@@ -129,6 +130,8 @@ hooks.authorize = ->
 
   @state.set sessionKey,
     notAuthorized: true
+
+  template = false if _.isString template and not Template[template]
 
   @layout layout if layout
   @render template or new Template -> 'Access denied...'
