@@ -127,7 +127,7 @@ hooks.authorize = ->
     @redirect route, {}, replaceState: replaceState
     return
 
-  @state.set 'iron-router-auth',
+  @state.set sessionKey,
     notAuthorized: true
 
   @layout layout if layout
