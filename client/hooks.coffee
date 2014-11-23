@@ -174,7 +174,7 @@ hooks.noAuth = ->
 
   replaceState ?= true
   route = sessionValue?.route ? route
-  route = '/' unless @router.routes[route] and route
+  route = '/' unless route and @router.routes[route]
 
   params = sessionValue?.params ? {}
 
