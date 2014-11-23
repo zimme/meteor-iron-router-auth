@@ -171,7 +171,6 @@ hooks.noAuth = ->
   else if home
     route = home if @router.routes[home]
 
-
   replaceState ?= true
   route = sessionValue?.route ? route
   route = '/' unless @router.routes[route] and route
