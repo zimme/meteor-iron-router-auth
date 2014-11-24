@@ -20,31 +20,47 @@ Router.plugin('auth');
 
 // Custom options
 Router.plugin('auth', {
-  allow: function() {
-    if Roles.findOne({name: 'user', userIds: {$in: [Meteor.userId()]}})
-      return true
-    else
-      return false
+  authenticate: {
+    route: 'signIn'
   },
-  dashboard: 'home',
-  login: 'login',
-  render: true
+  authorize: {
+    allow: function() {
+      if Roles.findOne({name: 'user', userIds: {$in: [Meteor.userId()]}})
+        return true
+      else
+        return false
+    },
+    template: 'notAuthorized'
+  }
 });
 ```
 
 ### Options
 ```js
 {
-  allow: function() {return true},
-  deny: function() {return false}, // deny overrides allow
-  dashboard: 'dashboard'
-  enroll: 'enroll',
-  forgot: 'forgotPassword',
-  layout: undefined, // Only used when render: true
-  login: 'login',
-  render: false,
-  reset: 'resetPassword',
-  verify: 'verifyPassword'
+  authenticate: {
+    home: 'home',
+    layout: undefined,
+    logout: 'logout',
+    replaceState: undefined,
+    route: 'login',
+    template: undefined
+  },
+  authorize: {
+    allow: function() {return true},
+    deny: function() {return false}, // deny overrides allow
+    layout: undefined,
+    replaceState: undefined,
+    route: undefined,
+    template: 'notAuthorized'
+  },
+  except: ['enroll', 'forgotPassword', 'login', 'reset', 'verify'],
+  noAuth: {
+    dashboard: 'dashboard',
+    home: 'home',
+    replaceState: undefined
+  },
+  only: ['enroll', 'login']
 }
 ```
 
@@ -57,12 +73,14 @@ namespace.
 
 Use hook globally
 ```js
-Router.onBeforeAction('authtenticate', {except: ['login']});
+Router.onBeforeAction('authenticate', {except: ['login']});
 
 // With options on use
 Router.onBeforeAction('authenticate', {
-  except: ['login'],
-  template: 'signInTemplate'
+  authenticate: {
+    template: 'signIn'
+  },
+  except: ['login']
 });
 ```
 
@@ -74,24 +92,24 @@ Redirect to `login` route when user isn't logged in.
 // instead as you can keep the router options
 // and hook options separated.
 Router.configure({
-  authtenticate: 'login'
+  authenticate: 'login'
 });
 
 Router.configure({
-  authtenticate: {
+  authenticate: {
     route: 'login'
   }
 });
 
 // Route config
 Router.route('/path', {
-  authtenticate: 'login',
+  authenticate: 'login',
   name: 'authNeededRoute',
   ...
 });
 
 Router.route('/path', {
-  authtenticate: {
+  authenticate: {
     route: 'login'
   },
   name: 'authNeededRoute',
@@ -100,19 +118,19 @@ Router.route('/path', {
 
 // Controller config
 AuthNeededController = RouteController.extend({
-  authtenticate: 'login',
+  authenticate: 'login',
   // Activate hook per route
-  onBeforeAction: 'authtenticate',
+  onBeforeAction: ['authenticate'],
   ...
 });
 
 AuthNeededController = RouteController.extend({
-  authtenticate: {
+  authenticate: {
     route: 'login'
   }
   // Activate hook per route with another custom hook
   onBeforeAction: [
-    'authtenticate',
+    'authenticate',
     function(pause) {
       // onBeforeAction hook
     }
@@ -124,8 +142,10 @@ Render `login` template in-place when user isn't logged in. (Configurable in
 same places as redirect examples)
 ```js
 Router.onBeforeAction('authenticate', {
-    layout: 'layout', // Optional
-    template: 'login'
+    authenticate: {
+      layout: 'layout', // Optional
+      template: 'login'
+    }
   }
 });
 ```
@@ -139,11 +159,13 @@ It just uses different options.
 Router.onBeforeAction('authorize');
 
 Router.onBeforeAction('authorize', {
-  allow: function() {
-    if (Roles.findOne({name: 'admin', userIds: {$in: [Meteor.userId()]}}))
-      return true
-    else
-      return false  
+  authorize: {
+    allow: function() {
+      if (Roles.findOne({name: 'admin', userIds: {$in: [Meteor.userId()]}}))
+        return true
+      else
+        return false  
+    }
   },
   except: ['login']
 });
@@ -172,7 +194,7 @@ Router.route('/login', {
   noAuth: {
     route: 'home'
   },
-  onBeforeAction: 'noAuth'
+  onBeforeAction: ['noAuth']
 });
 ```
 
@@ -188,7 +210,7 @@ Example `login` route.
 ```js
 Router.route('/login', {
   name: 'login',
-  onBeforeAction: 'noAuth'
+  onBeforeAction: ['noAuth']
   },
 });
 
