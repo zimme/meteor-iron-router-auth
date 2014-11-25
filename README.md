@@ -214,4 +214,6 @@ Router.route('/login', {
   },
 });
 
+There's more examples in the examples folder.
+
 ```
