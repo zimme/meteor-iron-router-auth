@@ -1,0 +1,21 @@
+<template name="login">
+  {{#autoForm settings}}
+    <h2 class="form-login-heading">Please login</h2>
+
+    <div class="form-group {{#if afFieldIsInvalid name='login'}}
+      has-error{{/if}} {{#if afFieldIsInvalid name='password'}}
+      has-error{{/if}}">
+      {{> afFieldInput name='login'}}
+      {{> afFieldInput name='password'}}
+      {{#if afFieldIsInvalid name='login'}}
+        <span class="help-block">{{afFieldMessage name='login'}}</span>
+      {{/if}}
+      {{#if afFieldIsInvalid name='password'}}
+        <span class="help-block">{{afFieldMessage name='password'}}</span>
+      {{/if}}
+    </div>
+
+    <button class="btn btn-block btn-lg btn-primary" type="submit">Login
+    </button>
+  {{/autoForm}}
+</template>

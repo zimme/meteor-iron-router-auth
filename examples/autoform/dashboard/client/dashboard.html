@@ -1,0 +1,22 @@
+<template name="dashboard">
+  <main>
+    <h1 class="text-center">Dashboard</h1>
+    <ul class="nav nav-pills nav-stacked">
+      <li>
+        {{#linkTo route='home'}}
+          Home
+        {{/linkTo}}
+      </li>
+      <li>
+        {{#linkTo route='users'}}
+          Users
+        {{/linkTo}}
+      </li>
+      <li>
+        {{#linkTo route='logout'}}
+          Logout
+        {{/linkTo}}
+      </li>
+    </ul>
+  </main>
+</template>
