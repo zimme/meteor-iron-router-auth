@@ -54,7 +54,7 @@ Router.plugin('auth', {
     route: undefined,
     template: 'notAuthorized'
   },
-  except: ['enroll', 'forgotPassword', 'login', 'reset', 'verify'],
+  except: ['enroll', 'forgotPassword', 'home', 'login', 'reset', 'verify'],
   noAuth: {
     dashboard: 'dashboard',
     home: 'home',
