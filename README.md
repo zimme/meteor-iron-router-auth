@@ -5,6 +5,12 @@
 
 I used [iron-router-auth](https://github.com/XpressiveCode/iron-router-auth) as inspiration and created a plugin and some auth hooks to use with onBeforeAction.
 
+To install this package in your application, just run:
+
+```bash
+meteor add zimme:iron-router-auth
+````
+
 ## Plugin
 
 The plugin is using the hooks under the hood. It's a plug 'n' play solution for
