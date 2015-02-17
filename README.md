@@ -223,4 +223,4 @@ Router.route('/login', {
 });
 ```
 
-More examples can be found in the [examples](https://github.com/zimme/meteor-iron-router-auth/examples) folder.
+More examples can be found in the examples folder.
