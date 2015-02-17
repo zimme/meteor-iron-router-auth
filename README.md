@@ -1,20 +1,23 @@
 # Auth plugin and hooks for [Iron.Router](https://github.com/EventedMind/iron-router)
 
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/zimme/meteor-iron-router-auth?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-[![Code Climate](https://img.shields.io/codeclimate/github/zimme/meteor-iron-router-auth.svg?style=flat)](https://codeclimate.com/github/zimme/meteor-iron-router-auth)
+[![Gitter](https://img.shields.io/badge/Gitter-Join_Chat-brightgreen.svg)]
+(https://gitter.im/zimme/meteor-iron-router-auth)
+[![Code Climate](https://img.shields.io/codeclimate/github/zimme/meteor-iron-router-auth.svg)]
+(https://codeclimate.com/github/zimme/meteor-iron-router-auth)
 
-I used [iron-router-auth](https://github.com/XpressiveCode/iron-router-auth) as inspiration and created a plugin and some auth hooks to use with onBeforeAction.
+I used [iron-router-auth](https://github.com/XpressiveCode/iron-router-auth) as inspiration and created a plugin and
+some auth hooks to use with onBeforeAction.
 
 ## Install
-```bash
+```sh
 meteor add zimme:iron-router-auth
 ````
 
 ## Plugin
 
-The plugin is using the hooks under the hood. It's a plug 'n' play solution for
-people with "regular" setups. I would recommend to try and use the plugin
-first and only use the hooks manually if you really need to.
+The plugin is using the hooks provided under the hood. It's a plug 'n' play solution for
+people with "regular" login flow. I would recommend you to try and use the plugin
+first and only use the provided hooks manually if you really need too.
 
 You can use the hook options on specific routes when using the plugin.
 
@@ -218,7 +221,6 @@ Router.route('/login', {
   onBeforeAction: ['noAuth']
   },
 });
-
-There's more examples in the examples folder.
-
 ```
+
+More examples can be found in the [examples](https://github.com/zimme/meteor-iron-router-auth/examples) folder.
