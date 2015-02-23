@@ -219,7 +219,6 @@ Example `login` route.
 Router.route('/login', {
   name: 'login',
   onBeforeAction: ['noAuth']
-  },
 });
 ```
 
