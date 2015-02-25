@@ -1,9 +1,9 @@
-# Auth plugin and hooks for [Iron.Router](https://github.com/EventedMind/iron-router)
-
 [![Gitter](https://img.shields.io/badge/gitter-join_chat-brightgreen.svg)]
 (https://gitter.im/zimme/meteor-iron-router-auth)
 [![Code Climate](https://img.shields.io/codeclimate/github/zimme/meteor-iron-router-auth.svg)]
 (https://codeclimate.com/github/zimme/meteor-iron-router-auth)
+
+# Auth plugin and hooks for [Iron.Router](https://github.com/EventedMind/iron-router)
 
 I used [iron-router-auth](https://github.com/XpressiveCode/iron-router-auth) as inspiration and created a plugin and
 some auth hooks to use with onBeforeAction.
