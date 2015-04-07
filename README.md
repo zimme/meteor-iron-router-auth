@@ -193,14 +193,14 @@ Router.route('/path', {
 
 ### No auth
 
-This hook is used when you want to redirect to another route when user already
-is logged in.
+This hook is used when you want to redirect an already logged in user to another route, for example the `login` route. It tries to use `dashboard`, `home` and falls back to the path `/`
 
 ```js
 Router.route('/login', {
   name: 'login',
   noAuth: {
-    route: 'home'
+    dashboard: 'homeForLoggedInUsers',
+    home: 'home'
   },
   onBeforeAction: ['noAuth']
 });
