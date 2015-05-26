@@ -10,6 +10,5 @@ aldeed:autoform
 aldeed:collection2
 iron:router
 accounts-password
-iron:location
-mizzao:bootstrap-3
-zimme:iron-router-auth@3.0.0-rc.0
+zimme:iron-router-auth
+twbs:bootstrap
