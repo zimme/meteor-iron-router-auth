@@ -8,7 +8,17 @@ defaults =
     deny: -> false
     template: 'notAuthorized'
 
-  except: ['enroll', 'forgotPassword', 'home', 'login', 'reset', 'verify']
+  except: [
+    'enroll'
+    'forgotPassword'
+    'home'
+    'login'
+    'reset' # XXX: Remove in next major version
+    'resetPassword'
+    'signup'
+    'verify' # XXX: Remove in next major version
+    'verifyEmail'
+  ]
 
   noAuth:
     dashboard: 'dashboard'
