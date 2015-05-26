@@ -2,3 +2,8 @@
 
 This example show you how you can use `zimme:iron-router-auth` together with
 `aldeed:autoform`.
+
+### Credentials
+
+  * user:password
+  * admin:password

@@ -1,28 +1,5 @@
 <template name="home">
   <main>
     <h1 class="text-center">Home</h1>
-    <ul class="nav nav-pills nav-stacked">
-      <li>
-        {{#linkTo route='dashboard'}}
-          Dashboard
-        {{/linkTo}}
-      </li>
-      <li>
-        {{#linkTo route='users'}}
-          Users
-        {{/linkTo}}
-      </li>
-      <li>
-        {{#if currentUser}}
-          {{#linkTo route='logout'}}
-            Logout
-          {{/linkTo}}
-        {{else}}
-          {{#linkTo route='login'}}
-            Login
-          {{/linkTo}}
-        {{/if}}
-      </li>
-    </ul>
   </main>
 </template>

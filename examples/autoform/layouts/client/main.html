@@ -1,4 +1,38 @@
 <template name="mainLayout">
+  <nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container">
+      <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li class="{{isActiveRoute 'home'}}">
+            {{#linkTo route='home'}}
+              Home
+            {{/linkTo}}
+          </li>
+          <li class="{{isActiveRoute 'dashboard'}}">
+            {{#linkTo route='dashboard'}}
+              Dashboard
+            {{/linkTo}}
+          </li>
+          <li class="{{isActiveRoute 'users'}}">
+            {{#linkTo route='users'}}
+              Users
+            {{/linkTo}}
+          </li>
+          <li  class="{{isActiveRoute regex='login|logout'}}">
+            {{#if currentUser}}
+              {{#linkTo route='logout'}}
+                Logout
+              {{/linkTo}}
+            {{else}}
+              {{#linkTo route='login'}}
+                Login
+              {{/linkTo}}
+            {{/if}}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
   <div class="container">
     {{> yield}}
   </div>
