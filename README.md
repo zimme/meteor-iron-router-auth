@@ -21,6 +21,39 @@ first and only use the provided hooks manually if you really need too.
 
 You can use the hook options on specific routes when using the plugin.
 
+### Deprecation
+
+The default exception routes `reset` and `verify` have been deprecated in favor
+of `resetPassword` and `verifyEmail`. These routes will be removed from the
+defaults with the next major version.
+
+To have the hooks run on these routes either set new options for the plugin
+
+```js
+Router.plugin('auth', {
+  ...
+  except: [
+    'enroll'
+    'forgotPassword'
+    'home'
+    'login'
+    'resetPassword'
+    'signup'
+    'verifyEmail'
+  ],
+  ...
+});
+```
+or manually add this to these route definitions.
+```js
+// Do the same for /verify
+Router.route('/reset', {
+  ...
+  onBeforeAction: ['authenticate', 'authorize'],
+  ...
+}
+```
+
 ### Usage
 ```js
 // Default options
