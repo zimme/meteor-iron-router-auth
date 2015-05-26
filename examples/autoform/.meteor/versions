@@ -67,4 +67,4 @@ url@1.0.4
 webapp@1.2.0
 webapp-hashing@1.0.3
 zimme:active-route@2.0.0-beta.1
-zimme:iron-router-auth@3.0.0
+zimme:iron-router-auth@3.0.1
