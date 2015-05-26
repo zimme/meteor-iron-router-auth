@@ -11,7 +11,7 @@ some auth hooks to use with onBeforeAction.
 ## Install
 ```sh
 meteor add zimme:iron-router-auth
-````
+```
 
 ## Plugin
 
