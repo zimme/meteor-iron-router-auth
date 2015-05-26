@@ -7,7 +7,10 @@ hooks.authenticate = ->
     @next()
     return
 
-  return if Meteor.loggingIn()
+  if Meteor.loggingIn()
+    # Remove warning about this.next(), we know what we're doing
+    @_rendered = true
+    return
 
   ns = 'authenticate'
 
@@ -82,7 +85,10 @@ hooks.authorize = ->
     @next()
     return
 
-  return if Meteor.loggingIn() or not Meteor.userId()
+  if Meteor.loggingIn() or not Meteor.userId()
+    # Remove warning about this.next(), we know what we're doing
+    @_rendered = true
+    return
 
   ns = 'authorize'
 
@@ -168,7 +174,10 @@ hooks.noAuth = ->
     @next()
     return
 
-  return if Meteor.loggingIn()
+  if Meteor.loggingIn()
+    # Remove warning about this.next(), we know what we're doing
+    @_rendered = true
+    return
 
   sessionValue = Session.get sessionKey
 
