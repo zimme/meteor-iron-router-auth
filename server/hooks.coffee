@@ -6,3 +6,5 @@ skip = ->
 hooks.authenticate = skip
 
 hooks.authorize = skip
+
+hooks.noAuth = skip
