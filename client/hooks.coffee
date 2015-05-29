@@ -145,9 +145,9 @@ hooks.authorize = ->
 
   replaceState ?= true
 
-  replaceState = replaceState.call @, authorized if _.isFunction replaceState
+  replaceState = replaceState.apply @ if _.isFunction replaceState
 
-  route = route.call @, authorized if _.isFunction route
+  route = route.apply @ if _.isFunction route
 
   if @router.routes[route]
     params = {}
@@ -165,11 +165,11 @@ hooks.authorize = ->
   @state.set sessionKey,
     notAuthorized: true
 
-  template = template.call @, authorized if _.isFunction template
+  template = template.apply @ if _.isFunction template
 
   template = false if _.isString template and not Template[template]
 
-  layout = layout.call @, authorized if _.isFunction layout
+  layout = layout.apply @ if _.isFunction layout
 
   @layout layout if layout
   @render template or new Template -> 'Access denied...'
