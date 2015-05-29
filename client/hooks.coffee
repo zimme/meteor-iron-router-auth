@@ -34,7 +34,7 @@ hooks.authenticate = ->
   check logout, Match.Optional String
   check replaceState, Match.Optional Boolean
   check route, Match.Optional String
-  check template, Match.Optional String, Blaze.Template
+  check template, Match.Optional String
 
   replaceState ?= true
 
@@ -130,7 +130,7 @@ hooks.authorize = ->
   check layout, Match.Optional String
   check replaceState, Match.Optional Boolean
   check route, Match.Optional String
-  check template, Match.Optional String, Blaze.Template
+  check template, Match.Optional String
 
   replaceState ?= true
 
