@@ -29,19 +29,26 @@ hooks.authenticate = ->
 
   route = options if _.isString options
 
-  check home, Match.Optional String
-  check layout, Match.Optional String
-  check logout, Match.Optional String
-  check replaceState, Match.Optional Boolean
-  check route, Match.Optional String
-  check template, Match.Optional String
+  check home, Match.Optional Match.OneOf Function, String
+  check layout, Match.Optional Match.OneOf Function, String
+  check logout, Match.Optional Match.OneOf Function, String
+  check replaceState, Match.Optional Match.OneOf Boolean, Function
+  check route, Match.Optional Match.OneOf Function, String
+  check template, Match.Optional Match.OneOf Function, String
 
   replaceState ?= true
 
+  replaceState = replaceState.apply @ if _.isFunction replaceState
+
+  logout = logout.apply @ if _.isFunction logout
+
   if @route.getName() is logout and not Meteor.userId()
+    home = home.apply @ if _.isFunction home
     home = '/' unless @router.routes[home] and home
     @redirect home, {}, replaceState: replaceState
     return
+
+  route = route.apply @ if _.isFunction route
 
   if @router.routes[route]
     params = {}
@@ -55,7 +62,11 @@ hooks.authenticate = ->
     @redirect route, {}, replaceState: replaceState
     return
 
+  template = template.apply @ if _.isFunction template
+
   template = false if _.isString template and not Template[template]
+
+  layout = layout.apply @ if _.isFunction layout
 
   @layout = layout if layout
   @render template or new Template -> 'Not authenticated...'
@@ -127,12 +138,16 @@ hooks.authorize = ->
   route = options?.route
   template = options?.template
 
-  check layout, Match.Optional String
-  check replaceState, Match.Optional Boolean
-  check route, Match.Optional String
-  check template, Match.Optional String
+  check layout, Match.Optional Match.OneOf Function, String
+  check replaceState, Match.Optional Match.OneOf Boolean, Function
+  check route, Match.Optional Match.OneOf Function, String
+  check template, Match.Optional Match.OneOf Function, String
 
   replaceState ?= true
+
+  replaceState = replaceState.apply @ if _.isFunction replaceState
+
+  route = route.apply @ if _.isFunction route
 
   if @router.routes[route]
     params = {}
@@ -150,7 +165,11 @@ hooks.authorize = ->
   @state.set sessionKey,
     notAuthorized: true
 
+  template = template.apply @ if _.isFunction template
+
   template = false if _.isString template and not Template[template]
+
+  layout = layout.apply @ if _.isFunction layout
 
   @layout layout if layout
   @render template or new Template -> 'Access denied...'
@@ -195,9 +214,12 @@ hooks.noAuth = ->
 
   route = options if _.isString options
 
-  check dashboard, Match.Optional String
-  check home, Match.Optional String
-  check replaceState, Match.Optional Boolean
+  check dashboard, Match.Optional Match.OneOf Function, String
+  check home, Match.Optional Match.OneOf Function, String
+  check replaceState, Match.Optional Match.OneOf Function, Boolean
+
+  dashboard = dashboard.apply @ if _.isFunction dashboard
+  home = home.apply @ if _.isFunction home
 
   if dashboard
     route = dashboard if @router.routes[dashboard]
@@ -206,7 +228,13 @@ hooks.noAuth = ->
     route = home if @router.routes[home]
 
   replaceState ?= true
+
+  replaceState = replaceState.apply @ if _.isFunction replaceState
+
   route = sessionValue?.route ? route
+
+  route = route.apply @ if _.isFunction route
+
   route = '/' unless route and @router.routes[route]
 
   params = sessionValue?.params ? {}
