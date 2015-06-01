@@ -189,13 +189,17 @@ hooks.authorize = ->
       console.warn 'No template set for authorize hook.'
 
 hooks.noAuth = ->
-  if @route.getName() is '__notfound__' or not Meteor.userId()
+  if @route.getName() is '__notfound__'
     @next()
     return
 
   if Meteor.loggingIn()
     # Remove warning about this.next(), we know what we're doing
     @_rendered = true
+    return
+
+  unless Meteor.userId()
+    @next()
     return
 
   sessionValue = Session.get sessionKey
