@@ -20,15 +20,21 @@ hooks.authenticate = ->
     @next()
     return
 
-  home = options?.home
-  layout = options?.layout
-  logout = options?.logout or 'logout'
-  replaceState = options?.replaceState
-  route = options?.route
-  template = options?.template
+  {
+    allowExternalRoute
+    home
+    layout
+    logout
+    replaceState
+    route
+    template
+  } = options ? {}
+
+  logout ?= 'logout'
 
   route = options if _.isString options
 
+  check allowExternalRoute, Match.Optional Match.OneOf Boolean, Function
   check home, Match.Optional Match.OneOf Function, String
   check layout, Match.Optional Match.OneOf Function, String
   check logout, Match.Optional Match.OneOf Function, String
@@ -60,6 +66,13 @@ hooks.authenticate = ->
 
     Session.set sessionKey, sessionValue
     @redirect route, {}, replaceState: replaceState
+    return
+
+  if _.isFunction allowExternalRoute
+    allowExternalRoute = allowExternalRoute.apply @
+
+  if allowExternalRoute and route
+    @redirect route
     return
 
   template = template.apply @ if _.isFunction template
@@ -109,11 +122,23 @@ hooks.authorize = ->
     @next()
     return
 
-  allow = options?.allow
-  deny = options?.deny
+  {
+    allow
+    allowExternalRoute
+    deny
+    layout
+    replaceState
+    route
+    template
+  } = options ? {}
 
   check allow, Match.Optional Function
+  check allowExternalRoute, Match.Optional Match.OneOf Boolean, Function
   check deny, Match.Optional Function
+  check layout, Match.Optional Match.OneOf Function, String
+  check replaceState, Match.Optional Match.OneOf Boolean, Function
+  check route, Match.Optional Match.OneOf Function, String
+  check template, Match.Optional Match.OneOf Function, String
 
   if not allow? and deny?
     authorized = not deny()
@@ -133,16 +158,6 @@ hooks.authorize = ->
     @next()
     return
 
-  layout = options?.layout
-  replaceState = options?.replaceState
-  route = options?.route
-  template = options?.template
-
-  check layout, Match.Optional Match.OneOf Function, String
-  check replaceState, Match.Optional Match.OneOf Boolean, Function
-  check route, Match.Optional Match.OneOf Function, String
-  check template, Match.Optional Match.OneOf Function, String
-
   replaceState ?= true
 
   replaceState = replaceState.apply @ if _.isFunction replaceState
@@ -160,6 +175,13 @@ hooks.authorize = ->
 
     Session.set sessionKey, sessionValue
     @redirect route, {}, replaceState: replaceState
+    return
+
+  if _.isFunction allowExternalRoute
+    allowExternalRoute = allowExternalRoute.apply @
+
+  if allowExternalRoute and route
+    @redirect route
     return
 
   @state.set sessionKey,
@@ -212,15 +234,22 @@ hooks.noAuth = ->
 
   options = @lookupOption ns
 
-  dashboard = options?.dashboard
-  home = options?.home
-  replaceState = options?.replaceState
+  {
+    allowExternalRoute
+    dashboard
+    home
+    replaceState
+  } = options ? {}
 
   route = options if _.isString options
 
+  check allowExternalRoute, Match.Optional Match.OneOf Boolean, Function
   check dashboard, Match.Optional Match.OneOf Function, String
   check home, Match.Optional Match.OneOf Function, String
   check replaceState, Match.Optional Match.OneOf Function, Boolean
+
+  if _.isFunction allowExternalRoute
+    allowExternalRoute = allowExternalRoute.apply @
 
   dashboard = dashboard.apply @ if _.isFunction dashboard
   home = home.apply @ if _.isFunction home
@@ -230,6 +259,12 @@ hooks.noAuth = ->
 
   else if home
     route = home if @router.routes[home]
+
+  else if allowExternalRoute and dashboard
+    route = dashboard
+
+  else if allowExternalRoute and home
+    route = home
 
   replaceState ?= true
 

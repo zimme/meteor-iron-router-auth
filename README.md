@@ -80,6 +80,7 @@ Router.plugin('auth', {
 ```js
 {
   authenticate: {
+    allowExternalRoute: undefined,
     home: 'home',
     layout: undefined,
     logout: 'logout',
@@ -89,6 +90,7 @@ Router.plugin('auth', {
   },
   authorize: {
     allow: function() {return true},
+    allowExternalRoute: undefined,
     deny: function() {return false}, // deny overrides allow
     layout: undefined,
     replaceState: undefined,
@@ -97,6 +99,7 @@ Router.plugin('auth', {
   },
   except: ['enroll', 'forgotPassword', 'home', 'login', 'reset', 'verify'],
   noAuth: {
+    allowExternalRoute: undefined,
     dashboard: 'dashboard',
     home: 'home',
     replaceState: undefined
