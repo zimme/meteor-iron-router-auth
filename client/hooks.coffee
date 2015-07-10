@@ -21,12 +21,12 @@ hooks.authenticate = ->
     return
 
   {
-    allowExternalRoute
     home
     layout
     logout
     replaceState
     route
+    routeAsPath
     template
   } = options ? {}
 
@@ -34,12 +34,12 @@ hooks.authenticate = ->
 
   route = options if _.isString options
 
-  check allowExternalRoute, Match.Optional Match.OneOf Boolean, Function
   check home, Match.Optional Match.OneOf Function, String
   check layout, Match.Optional Match.OneOf Function, String
   check logout, Match.Optional Match.OneOf Function, String
   check replaceState, Match.Optional Match.OneOf Boolean, Function
   check route, Match.Optional Match.OneOf Function, String
+  check routeAsPath, Match.Optional Match.OneOf Boolean, Function
   check template, Match.Optional Match.OneOf Function, String
 
   replaceState ?= true
@@ -68,10 +68,10 @@ hooks.authenticate = ->
     @redirect route, {}, replaceState: replaceState
     return
 
-  if _.isFunction allowExternalRoute
-    allowExternalRoute = allowExternalRoute.apply @
+  if _.isFunction routeAsPath
+    routeAsPath = routeAsPath.apply @
 
-  if allowExternalRoute and route
+  if routeAsPath and route
     @redirect route
     return
 
@@ -124,20 +124,20 @@ hooks.authorize = ->
 
   {
     allow
-    allowExternalRoute
     deny
     layout
     replaceState
     route
+    routeAsPath
     template
   } = options ? {}
 
   check allow, Match.Optional Function
-  check allowExternalRoute, Match.Optional Match.OneOf Boolean, Function
   check deny, Match.Optional Function
   check layout, Match.Optional Match.OneOf Function, String
   check replaceState, Match.Optional Match.OneOf Boolean, Function
   check route, Match.Optional Match.OneOf Function, String
+  check routeAsPath, Match.Optional Match.OneOf Boolean, Function
   check template, Match.Optional Match.OneOf Function, String
 
   if not allow? and deny?
@@ -177,10 +177,10 @@ hooks.authorize = ->
     @redirect route, {}, replaceState: replaceState
     return
 
-  if _.isFunction allowExternalRoute
-    allowExternalRoute = allowExternalRoute.apply @
+  if _.isFunction routeAsPath
+    routeAsPath = routeAsPath.apply @
 
-  if allowExternalRoute and route
+  if routeAsPath and route
     @redirect route
     return
 
@@ -235,21 +235,21 @@ hooks.noAuth = ->
   options = @lookupOption ns
 
   {
-    allowExternalRoute
     dashboard
     home
     replaceState
+    routeAsPath
   } = options ? {}
 
   route = options if _.isString options
 
-  check allowExternalRoute, Match.Optional Match.OneOf Boolean, Function
   check dashboard, Match.Optional Match.OneOf Function, String
   check home, Match.Optional Match.OneOf Function, String
   check replaceState, Match.Optional Match.OneOf Function, Boolean
+  check routeAsPath, Match.Optional Match.OneOf Boolean, Function
 
-  if _.isFunction allowExternalRoute
-    allowExternalRoute = allowExternalRoute.apply @
+  if _.isFunction routeAsPath
+    routeAsPath = routeAsPath.apply @
 
   dashboard = dashboard.apply @ if _.isFunction dashboard
   home = home.apply @ if _.isFunction home
@@ -260,10 +260,10 @@ hooks.noAuth = ->
   else if home
     route = home if @router.routes[home]
 
-  else if allowExternalRoute and dashboard
+  else if routeAsPath and dashboard
     route = dashboard
 
-  else if allowExternalRoute and home
+  else if routeAsPath and home
     route = home
 
   replaceState ?= true
