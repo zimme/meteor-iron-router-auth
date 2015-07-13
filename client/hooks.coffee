@@ -16,6 +16,11 @@ hooks.authenticate = ->
 
   options = @lookupOption ns
 
+  if _.isFunction options
+    options.apply @
+    @next()
+    return
+
   if options is false
     @next()
     return
@@ -108,6 +113,11 @@ hooks.authorize = ->
   ns = 'authorize'
 
   options = @lookupOption ns
+
+  if _.isFunction options
+    options.apply @
+    @next()
+    return
 
   if options is false
     @next()
@@ -215,6 +225,15 @@ hooks.noAuth = ->
   ns = 'noAuth'
 
   options = @lookupOption ns
+
+  if _.isFunction options
+    options.apply @
+    @next()
+    return
+
+  if options is false
+    @next()
+    return
 
   {
     dashboard
