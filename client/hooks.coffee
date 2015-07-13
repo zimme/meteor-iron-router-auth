@@ -26,7 +26,6 @@ hooks.authenticate = ->
     logout
     replaceState
     route
-    routeAsPath
     template
   } = options ? {}
 
@@ -39,7 +38,6 @@ hooks.authenticate = ->
   check logout, Match.Optional Match.OneOf Function, String
   check replaceState, Match.Optional Match.OneOf Boolean, Function
   check route, Match.Optional Match.OneOf Function, String
-  check routeAsPath, Match.Optional Match.OneOf Boolean, Function
   check template, Match.Optional Match.OneOf Function, String
 
   replaceState ?= true
@@ -56,7 +54,7 @@ hooks.authenticate = ->
 
   route = route.apply @ if _.isFunction route
 
-  if @router.routes[route]
+  if @router.routes[route] or route and '/' is route.slice 0, 1
     params = {}
     params[key] = value for own key, value of @params
 
@@ -66,13 +64,6 @@ hooks.authenticate = ->
 
     Session.set sessionKey, sessionValue
     @redirect route, {}, replaceState: replaceState
-    return
-
-  if _.isFunction routeAsPath
-    routeAsPath = routeAsPath.apply @
-
-  if routeAsPath and route
-    @redirect route
     return
 
   template = template.apply @ if _.isFunction template
@@ -128,7 +119,6 @@ hooks.authorize = ->
     layout
     replaceState
     route
-    routeAsPath
     template
   } = options ? {}
 
@@ -137,7 +127,6 @@ hooks.authorize = ->
   check layout, Match.Optional Match.OneOf Function, String
   check replaceState, Match.Optional Match.OneOf Boolean, Function
   check route, Match.Optional Match.OneOf Function, String
-  check routeAsPath, Match.Optional Match.OneOf Boolean, Function
   check template, Match.Optional Match.OneOf Function, String
 
   if not allow? and deny?
@@ -164,7 +153,7 @@ hooks.authorize = ->
 
   route = route.apply @ if _.isFunction route
 
-  if @router.routes[route]
+  if @router.routes[route] or route and '/' is route.slice 0, 1
     params = {}
     params[key] = value for own key, value of @params
 
@@ -175,13 +164,6 @@ hooks.authorize = ->
 
     Session.set sessionKey, sessionValue
     @redirect route, {}, replaceState: replaceState
-    return
-
-  if _.isFunction routeAsPath
-    routeAsPath = routeAsPath.apply @
-
-  if routeAsPath and route
-    @redirect route
     return
 
   @state.set sessionKey,
@@ -238,7 +220,6 @@ hooks.noAuth = ->
     dashboard
     home
     replaceState
-    routeAsPath
   } = options ? {}
 
   route = options if _.isString options
@@ -246,24 +227,14 @@ hooks.noAuth = ->
   check dashboard, Match.Optional Match.OneOf Function, String
   check home, Match.Optional Match.OneOf Function, String
   check replaceState, Match.Optional Match.OneOf Function, Boolean
-  check routeAsPath, Match.Optional Match.OneOf Boolean, Function
-
-  if _.isFunction routeAsPath
-    routeAsPath = routeAsPath.apply @
 
   dashboard = dashboard.apply @ if _.isFunction dashboard
   home = home.apply @ if _.isFunction home
 
-  if dashboard
-    route = dashboard if @router.routes[dashboard]
-
-  else if home
-    route = home if @router.routes[home]
-
-  else if routeAsPath and dashboard
+  if dashboard and (@router.routes[dashboard] or '/' is dashboard.slice 0, 1)
     route = dashboard
 
-  else if routeAsPath and home
+  else if home and (@router.routes[home] or home.slice 0, 1)
     route = home
 
   replaceState ?= true
