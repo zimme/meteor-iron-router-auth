@@ -140,13 +140,13 @@ hooks.authorize = ->
   check template, Match.Optional Match.OneOf Function, String
 
   if not allow? and deny?
-    authorized = not deny()
+    authorized = not deny.call @
 
   else if allow? and not deny?
-    authorized = allow()
+    authorized = allow.call @
 
   else if allow? and deny?
-    authorized = not deny() and allow()
+    authorized = not deny.call(@) and allow.call(@)
 
   if authorized
     @next()
