@@ -14,18 +14,18 @@ Package.onUse(function (api) {
     'check',
     'coffeescript',
     'ejson',
-    'underscore'
+    'underscore',
   ]);
 
   api.use('iron:router@1.0.3');
 
   api.addFiles([
     'client/hooks.coffee',
-    'client/plugins.coffee'
+    'client/plugins.coffee',
   ], 'client');
 
   api.addFiles([
     'server/hooks.coffee',
-    'server/plugins.coffee'
+    'server/plugins.coffee',
   ], 'server');
 });
