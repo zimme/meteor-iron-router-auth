@@ -2,6 +2,7 @@ hooks = Iron.Router.hooks
 
 sessionKey = 'iron-router-auth'
 
+# onBeforeAction hook
 hooks.authenticate = ->
   if @route.getName() is '__notfound__' or Meteor.userId()
     @next()
@@ -94,6 +95,7 @@ hooks.authenticate = ->
     else
       console.warn 'No template set for authenticate hook.'
 
+# onBeforeAction hook
 hooks.authorize = ->
   if @route.getName() is '__notfound__'
     @next()
@@ -202,6 +204,7 @@ hooks.authorize = ->
     else
       console.warn 'No template set for authorize hook.'
 
+# onBeforeAction hook
 hooks.noAuth = ->
   if @route.getName() is '__notfound__'
     @next()
@@ -283,6 +286,7 @@ hooks.noAuth = ->
     else
       console.warn "No route or template set for noAuth hook, using \"/\""
 
+# onStop hook
 hooks.saveCurrentRoute = ->
   params = {}
   params[key] = value for own key, value of @params
@@ -294,6 +298,7 @@ hooks.saveCurrentRoute = ->
   Session.set sessionKey, sessionValue
   return
 
+# onRun hook
 hooks.removePreviousRoute = ->
   delete Session.keys[sessionKey]
 
