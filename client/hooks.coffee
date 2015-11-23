@@ -282,3 +282,20 @@ hooks.noAuth = ->
 
     else
       console.warn "No route or template set for noAuth hook, using \"/\""
+
+hooks.saveCurrentRoute = ->
+  params = {}
+  params[key] = value for own key, value of @params
+
+  sessionValue =
+    params: params
+    route: @route.getName()
+
+  Session.set sessionKey, sessionValue
+  return
+
+hooks.removePreviousRoute = ->
+  delete Session.keys[sessionKey]
+
+  @next()
+  return
