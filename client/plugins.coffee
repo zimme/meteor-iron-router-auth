@@ -45,64 +45,70 @@ defaults =
 plugins = Iron.Router.plugins
 
 plugins.auth = (router, options = {}) ->
-  options.authenticate = _.defaults options.authenticate ? {},
-    defaults.authenticate.options
-  options.authorize = _.defaults options.authorize ? {},
-    defaults.authorize.options
-  options.noAuth = _.defaults options.noAuth ? {}, defaults.noAuth.options
-  options.removePreviousRoute = _.defaults options.removePreviousRoute ? {},
+  { authenticate
+    authorize
+    noAuth
+    removePreviousRoute
+    saveCurrentRoute
+  } = options
+
+  authenticate = _.defaults {}, authenticate, defaults.authenticate.options
+  authenticateExcept = authenticate.except ? defaults.authenticate.except
+  authenticateOnly = authenticate.only
+
+  authorize = _.defaults {}, authorize, defaults.authorize.options
+  authorizeExcept = authorize.except ? authenticateExcept
+  authorizeOnly = authorize.only
+
+  noAuth = _.defaults {}, noAuth, defaults.noAuth.options
+  noAuthExcept = noAuth.except
+  noAuthOnly = noAuth.only ? defaults.noAuth.only
+
+  removePreviousRoute = _.defaults {}, removePreviousRoute,
     defaults.removePreviousRoute.options
-  options.saveCurrentRoute = _.defaults options.saveCurrentRoute ? {},
+  removePreviousRouteExcept = removePreviousRoute.except ?
+    defaults.removePreviousRoute.except
+  removePreviousRouteOnly = removePreviousRoute.only
+
+  saveCurrentRoute = _.defaults {}, saveCurrentRoute,
     defaults.saveCurrentRoute.options
+  saveCurrentRouteExcept = saveCurrentRoute.except ?
+    defaults.saveCurrentRoute.except
+  saveCurrentRouteOnly = saveCurrentRoute.only
 
-  route = options.authenticate.route
+  route = authenticate.route
 
-  options.removePreviousRoute =
-    removePreviousRoute: _.omit options.removePreviousRoute, 'except', 'only'
-    except: unless options.removePreviousRoute.only
-      _.defaults options.removePreviousRoute.except ? [],
-        defaults.removePreviousRoute.except
-    only: unless options.removePreviousRoute.except
-      options.removePreviousRoute.only
+  options =
+    authenticate: _.omit authenticate, 'except', 'only'
+    except: unless authenticate.only then authenticateExcept
+    only: unless authenticate.except then authenticateOnly
 
-  router.onRun 'removePreviousRoute', options.removePreviousRoute if route
+  router.onBeforeAction 'authenticate', options
 
-  options.authenticate =
-    authenticate: _.omit options.authenticate, 'except', 'only'
-    except: unless options.authenticate.only
-      _.defaults options.authenticate.except ? [],
-        defaults.authenticate.except
-    only: unless options.authenticate.except
-      options.authenticate.only
+  options =
+    authorize: _.omit authorize, 'except', 'only'
+    except: unless authorize.only then authorizeExcept
+    only: unless authorize.except then authorizeOnly
 
-  router.onBeforeAction 'authenticate', options.authenticate
+  router.onBeforeAction 'authorize', options
 
-  options.authorize =
-    authorize: _.omit options.authorize, 'except', 'only'
-    except: unless options.authorize.only
-      _.defaults options.authorize.except ? [], options.authenticate.except,
-        defaults.authenticate.except
-    only: unless options.authorize.except
-      options.authorize.only
+  options =
+    noAuth: _.omit noAuth, 'except', 'only'
+    except: unless noAuth.only then noAuthExcept
+    only: unless noAuth.except then noAuthOnly
 
-  router.onBeforeAction 'authorize', options.authorize
+  router.onBeforeAction 'noAuth', options
 
-  options.saveCurrentRoute =
-    saveCurrentRoute: _.omit options.saveCurrentRoute, 'except', 'only'
-    except: unless options.saveCurrentRoute.only
-      _.defaults options.saveCurrentRoute.except ? [],
-        defaults.saveCurrentRoute.except
-    only: unless options.saveCurrentRoute.except
-      options.saveCurrentRoute.only
+  options =
+    removePreviousRoute: _.omit removePreviousRoute, 'except', 'only'
+    except: unless removePreviousRoute.only then removePreviousRouteExcept
+    only: unless removePreviousRoute.except then removePreviousRouteOnly
 
-  router.onStop 'saveCurrentRoute', options.saveCurrentRoute if route
+  router.onRun 'removePreviousRoute', options if route
 
-  options.noAuth =
-    noAuth: _.omit options.noAuth, 'except', 'only'
-    except: unless options.noAuth.only
-      options.noAuth.except
-    only: unless options.noAuth.except
-      _.defaults options.noAuth.only ? [],
-        defaults.noAuth.only
+  options =
+    saveCurrentRoute: _.omit saveCurrentRoute, 'except', 'only'
+    except: unless saveCurrentRoute.only then saveCurrentRouteExcept
+    only: unless saveCurrentRoute.except then saveCurrentRouteOnly
 
-  router.onBeforeAction 'noAuth', options.noAuth
+  router.onStop 'saveCurrentRoute', options if route
