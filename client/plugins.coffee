@@ -38,7 +38,6 @@ defaults =
   saveCurrentRoute:
     except: [
       'login'
-      'logout'
       'signup'
     ]
 

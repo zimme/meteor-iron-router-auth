@@ -52,10 +52,17 @@ hooks.authenticate = ->
 
   logout = logout.apply @ if _.isFunction logout
 
+  sessionValue = Session.get sessionKey
+  previousRoute = sessionValue?.route
+  home = home.apply @ if _.isFunction home
+  home = '/' unless @router.routes[home] and home
+
+  if previousRoute is logout and not Meteor.userId()
+    delete Session.keys[sessionKey]
+    @redirect home, {}, replaceState: replaceState
+    return
+
   if @route.getName() is logout and not Meteor.userId()
-    home = home.apply @ if _.isFunction home
-    home = '/' unless @router.routes[home] and home
-    sessionValue = Session.get sessionKey
     route = sessionValue?.route ? home
     params = sessionValue?.params ? {}
     delete Session.keys[sessionKey]
@@ -305,6 +312,5 @@ hooks.saveCurrentRoute = ->
 # onRun hook
 hooks.removePreviousRoute = ->
   delete Session.keys[sessionKey]
-
   @next()
   return
