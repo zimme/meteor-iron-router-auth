@@ -58,6 +58,7 @@ hooks.authenticate = ->
     sessionValue = Session.get sessionKey
     route = sessionValue?.route ? home
     params = sessionValue?.params ? {}
+    delete Session.keys[sessionKey]
     @redirect route, params, replaceState: replaceState
     return
 
