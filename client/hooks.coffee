@@ -311,6 +311,7 @@ hooks.saveCurrentRoute = ->
 
 # onRun hook
 hooks.removePreviousRoute = ->
-  delete Session.keys[sessionKey]
+  sessionValue = Session.get sessionKey
+  delete Session.keys[sessionKey] unless sessionValue?.route is @route.getName()
   @next()
   return
