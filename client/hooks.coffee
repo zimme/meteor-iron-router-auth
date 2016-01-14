@@ -57,7 +57,7 @@ hooks.authenticate = ->
   home = home.apply @ if _.isFunction home
   home = '/' unless @router.routes[home] and home
 
-  if previousRoute is logout and not Meteor.userId()
+  if @route.getName() isnt logout and previousRoute is logout and not Meteor.userId()
     delete Session.keys[sessionKey]
     @redirect home, {}, replaceState: replaceState
     return
