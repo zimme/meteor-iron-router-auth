@@ -1,0 +1,27 @@
+{
+  "name": "meteor-iron-router-auth",
+  "version": "4.0.0-alpha.5",
+  "description": "[![Gitter](https://img.shields.io/badge/gitter-join_chat-brightgreen.svg)] (https://gitter.im/zimme/meteor-iron-router-auth) [![Code Climate](https://img.shields.io/codeclimate/github/zimme/meteor-iron-router-auth.svg)] (https://codeclimate.com/github/zimme/meteor-iron-router-auth)",
+  "main": "package.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zimme/meteor-iron-router-auth.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zimme/meteor-iron-router-auth/issues"
+  },
+  "homepage": "https://github.com/zimme/meteor-iron-router-auth#readme",
+  "devDependencies": {
+    "eslint": "^1.10.3",
+    "eslint-config-airbnb": "^3.1.0",
+    "eslint-plugin-react": "^3.15.0"
+  }
+}

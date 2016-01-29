@@ -6,13 +6,13 @@ Package.describe({
 });
 
 Package.onUse(function (api) {
-  api.versionsFrom('1.0');
+  api.versionsFrom('1.2');
 
   api.use('accounts-base', 'client');
 
   api.use([
     'check',
-    'coffeescript',
+    'ecmascript',
     'ejson',
     'underscore',
   ]);
@@ -20,12 +20,12 @@ Package.onUse(function (api) {
   api.use('iron:router@1.0.3');
 
   api.addFiles([
-    'client/hooks.coffee',
-    'client/plugins.coffee',
+    'client/hooks.js',
+    'client/plugins.js',
   ], 'client');
 
   api.addFiles([
-    'server/hooks.coffee',
-    'server/plugins.coffee',
+    'server/hooks.js',
+    'server/plugins.js',
   ], 'server');
 });
