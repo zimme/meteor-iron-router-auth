@@ -108,8 +108,9 @@ Router.plugin('auth', {
 }
 ```
 
-Please note that plugin order matters:
+### Plugin order
 
+Please note that plugin order matters:
 ```
 // Check authentication first
 Router.plugin('auth');
