@@ -108,6 +108,15 @@ Router.plugin('auth', {
 }
 ```
 
+Please note that plugin order matters:
+
+```
+// Check authentication first
+Router.plugin('auth');
+// Then check not found.  
+// Otherwise routes waiting for data will notFound instead of authenticate.
+Router.plugin('dataNotFound', { notFoundTemplate: 'notFound' });  
+```
 
 ## Hooks
 
